@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+margin: 0;
+padding: 0;
+background-color: #000ffff;
+}
+body {background-image:url('226231.jpg');}
+
+</style>
+<script type="text/javascript">
+
+     var canvas;
+     var ctx;
+     var dx = 50;
+     var dy = 50;
+     var x = 600;
+     var y = 500;
+     var WIDTH = 1250;
+     var HEIGHT = 700;
+
+      function canvasSpaceGame() {
+
+        // Get the canvas element.
+        canvas = document.getElementById("canvas");
+
+        // Make sure you got it.
+        if (canvas.getContext)
+
+        // If you have it, create a canvas user inteface element.
+        {
+          // Specify 2d canvas type.
+          ctx = canvas.getContext("2d");
+
+          // Paint it black.
+          ctx.fillStyle = "black";
+          ctx.rect(0, 0,WIDTH,HEIGHT);
+          ctx.fill();
+
+          
+          // Save the initial background.
+          back = ctx.getImageData(0, 0, 30, 30);
+          
+          // Draw space ship.
+          init();
+   
+        }
+
+        // Add keyboard listener to detect when someone presses a key on the keyboard
+        window.addEventListener('keydown', doKeyDown, true);
+
+      }
+
+//To create our circle we will make a circle() function.
+function circle(x,y,r) {
+ctx.beginPath(); //The beginpath() method makes sure that we are starting a new path. 
+ctx.arc(x, y, r, 0, Math.PI*2, true); //Next we use the arc(x, y, radius, startAngle, endAngle, anticlockwise) method to define the size and shape of our circle.
+ctx.fill(); //fill() method which fills our circle with the color 
+}
+
+// Next we create a rectangle that is the same size as the canvas using our rect() function.
+function rect(x,y,w,h) {
+ctx.beginPath();
+ctx.rect(x,y,w,h);
+ctx.closePath();
+ctx.fill();
+ctx.stroke();
+}
+
+// clear() function which uses the clearRect() method to erase everything in a rectangle that is the same size as the canvas. 
+function clear() {
+ctx.clearRect(0, 0, WIDTH, HEIGHT); //The WIDTH and HEIGHT have the same value as the width an height of the canvas.
+}
+
+function draw() {
+clear();
+ // Paint it black.
+          ctx.fillStyle = "black";
+          ctx.rect(0, 0,WIDTH,HEIGHT);
+          ctx.fill();
+ // Save the initial background.
+          back = ctx.getImageData(0, 0, 30, 30);
+ //The stroke method draws a border around the rectangle with the color defined in the strokeStyle attribute
+         ctx.strokeStyle = "black";
+ // Paint the starfield.
+         stars();
+ctx.fillStyle = "purple"; //we change the fillStyle attribute to the color that we want our circle to be.
+circle(x, y, 35); //the circle has a radius of 35 and its origin is at (x,y).
+}
+
+function init() {
+// Get the canvas element.
+canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+return setInterval(draw, 10);
+}
+
+//When a key on the keyboard is pressed down, the doKeyDown() function is executed.
+function doKeyDown(evt){
+switch (evt.keyCode) {
+//38 is the keycode that is captured when the up arrow is pressed.
+case 38:  /* Up arrow was pressed */
+if (y - dy > 0){ //We don't want our shape to move completely off of the canvas so we do not let y become less than zero.
+y -= dy;
+}
+break;
+case 40:  /* Down arrow was pressed */
+if (y + dy < HEIGHT){
+y += dy;
+}
+break;
+case 37:  /* Left arrow was pressed */
+if (x - dx > 0){
+x -= dx;
+}
+break;
+case 39:  /* Right arrow was pressed */
+if (x + dx < WIDTH){
+x += dx;
+}
+break;
+}
+}
+
+canvasSpaceGame();
+
+// Paint a random starfield.
+      function stars() {
+
+        // Draw 50 stars.
+        for (i = 0; i <= 10; i++) {
+          // Get random positions for stars.
+          var x = Math.floor(Math.random() * WIDTH-1);
+          var y = Math.floor(Math.random() * HEIGHT-1);
+
+          // Make the stars white
+          ctx.fillStyle = "white";
+
+          // Give the ship some room by painting black stars.
+          if (x < 30 || y < 30) ctx.fillStyle = "black";
+
+          // Draw an individual star.
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2, true);
+          ctx.closePath();
+          ctx.fill();
+          
+        }
+      }
+
+    
+
+</script>
+</head>
+
+<body onload="canvasSpaceGame()">
+<audio controls="controls" autoplay="autoplay" loop="loop">
+  <source src="Background Music.mp3" type="audio/mpeg">
+  <source src="Background Music.ogg" type="audio/ogg">
+  <embed height="50" width="100" src="horse.mp3">
+</audio>
+
+<button onclick="JavaScript:alert('^_^ Have Fun ^_^')"> New Game </button>
+<button onclick="JavaScript:alert('click on the same shape in the page')"> <img src="close.png" /></button>
+<button onclick="JavaScript:alert('press OK to continue')"> Pause </button>
+
+
+<canvas id="canvas" width="1250" height="700">
+</canvas>
+
+
+</html>
