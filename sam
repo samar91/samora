@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+  	body {
+  		margin: 0;
+  		padding: 0;
+  		background-color: #441A45;
+
+        }
+        body {background-image:url('226231.jpg');}
+  </style>
+   <script src="pixi.js"></script>
+</head>
+<body>
+    
+     <audio controls="controls" autoplay="autoplay" loop="loop"> 
+         <source src="Background Music.mp3" type="audio/mpeg">
+         <source src="Background Music.ogg" type="audio/ogg">
+         <embed height="50" width="100" src="horse.mp3">
+     </audio>
+     
+<script>
+
+     var i = 0;
+     var bullets=[];
+    
+  // create an new instance of a pixi stage
+   var stage = new PIXI.Stage(0x79337A, true);
+    
+    // create a renderer instance
+     var renderer = PIXI.autoDetectRenderer(1280, 600);
+
+    // add the renderer view element to the DOM
+     document.body.appendChild(renderer.view);
+    
+    // create a texture from an image path
+     var spaceship = PIXI.Texture.fromImage("ship.png"); 
+     var pixel = PIXI.Texture.fromImage("pixel.png");
+
+     renderer.view.style.position = "absolute";
+     renderer.view.style.top = "50px";
+     renderer.view.style.left = "0px";
+     
+     requestAnimFrame( animate );
+
+     createship(Math.random()*1280,Math.random()*600);
+
+   function createship(x, y){
+   // create a new Sprite using the texture.
+     var ship = new PIXI.Sprite(spaceship);
+
+   // Enable the ship to be interactive,this will allow it to respond to mouse and touch events
+     ship.setInteractive(true);
+
+
+   // center the sprites anchor point
+     ship.anchor.x = 0.5;
+     ship.anchor.y = 0.5;
+
+   // Explain how the bullets come out of the same location of the ship 
+     for (i=1;i<99;i++){
+     bullets[i]= new PIXI.Sprite(pixel);
+     bullets[i].anchor.x = 0.5;
+     bullets[i].anchor.y = 0.5;
+     bullets[i].position.x=500;
+       bullets[i].position.y-=2;
+     }
+       
+   // use the mousedown and touchstart
+     ship.mousemove = ship.touchstart = function(data)
+     {
+   // store a refference to the data because of multitouch and we need to track the movement of this particular touch
+     this.data = data;
+     this.alpha = 0.9;
+     this.dragging = true;
+     };
+     
+     ship.mousedown = ship.touchstart = function(data){
+  	this.isdown = true;	
+  	for(i =1 ; i <99 ; i++){
+          bullets[i] = new PIXI.Sprite(pixel);
+          bullets[i].anchor.x = 0.5;
+          bullets[i].anchor.y = 0.5;
+          bullets[i].position.x = ship.position.x ;
+          bullets[i].position.y = ship.position.y -50*i;
+          contain.addChild(bullets[i]);
+          //check();
+            }     
+             //check();  
+  		this.alpha = 1;	
+  	}
+   // put the events for when the mouse is released or a touch is released
+     ship.mousemove = function(event){
+      this.position.x = event.global.x;
+      this.position.y = event.global.y;
+     }
+     ship.ontouchmove = function(event){
+      this.position.x = event.global.x;
+      this.position.y = event.global.y;
+     }
+
+   // move the sprite to its designated position
+     ship.position.x = x;
+     ship.position.y = y;
+
+   // add it to the stage
+     stage.addChild(ship);
+}
+
+// Explain how the enemies which attack the chip come out from the outer spacevar enemies
+var enemies = PIXI.Texture.fromImage("eggHead.png");
+  var enemy1=[];
+  var enemy2=[];
+    var enemy3=[];
+
+  for (i=0;i<150;i++){
+     enemy1[i]= new PIXI.Sprite(enemies);
+     enemy1[i].anchor.x = 0.2;
+     enemy1[i].anchor.y = 0.2;
+     enemy1[i].position.x=250;
+       enemy1[i].position.y-=100*2*i;
+     stage.addChild(enemy1[i]);
+     }
+     for (i=0;i<150;i++){
+     enemy2[i]= new PIXI.Sprite(enemies);
+     enemy2[i].anchor.x = 0.2;
+     enemy2[i].anchor.y = 0.2;
+     enemy2[i].position.x=500;
+       enemy2[i].position.y-=150*3*i;
+     stage.addChild(enemy2[i]);
+     }
+     
+     for (i=0;i<150;i++){
+     enemy3[i]= new PIXI.Sprite(enemies);
+     enemy3[i].anchor.x = 0.2;
+     enemy3[i].anchor.y = 0.2;
+     enemy3[i].position.x=900;
+       enemy3[i].position.y-=300*i;
+     stage.addChild(enemy3[i]);
+     }
+
+function animate() {
+
+requestAnimFrame( animate );
+        for(var i = 0; i<150;i++){
+         enemy1[i].position.y+=1;
+        }
+
+        for(var i = 0; i<150;i++){
+         enemy2[i].position.y+=2;
+        }
+    
+      for(var i = 0; i<150;i++){
+         enemy3[i].position.y+=3;
+        } 
+        
+        for(var i = 1; i<99;i++){
+         bullets[i].position.y-=45;
+      }
+// render the stage
+renderer.render(stage);
+}
+    
+</script>
+<button onclick="JavaScript:alert('^_^ Have Fun ^_^')"> New Game </button>
+<button onclick="JavaScript:alert('click on the same shape in the page')"> <img src="close.png" /></button>
+<button onclick="JavaScript:alert('press OK to continue')"> Pause </button>
+
+</body>
+</html>
